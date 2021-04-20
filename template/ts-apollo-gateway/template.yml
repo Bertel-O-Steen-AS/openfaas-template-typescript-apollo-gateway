@@ -1,0 +1,2 @@
+language: ts-apollo-gateway
+fprocess: node index.js
