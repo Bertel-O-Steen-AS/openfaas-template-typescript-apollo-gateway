@@ -10,6 +10,9 @@ const args = process.argv.slice(2);
 const mode = args[0]
 const apolloKey = process.env.APOLLO_KEY;
 const apolloSchemaConfigDeliveryEndpoint = process.env.APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT;
+const debug = !!process.env.APOLLO_DEBUG ? process.env.APOLLO_DEBUG === 'true' : false;
+const introspection = !!process.env.APOLLO_INTROSPECTION ? process.env.APOLLO_INTROSPECTION === 'true' : true;
+const playground = !!process.env.APOLLO_PLAYGROUND ? process.env.APOLLO_PLAYGROUND === 'true' : false;
 
 const config = {}
 if (!apolloKey || !apolloSchemaConfigDeliveryEndpoint) {
@@ -22,10 +25,12 @@ const gateway = new ApolloGateway(config)
 
 const server = new ApolloServer({
   gateway,
-  debug: true,
+  introspection,
+  playground,
+  debug,
   // Subscriptions are unsupported but planned for a future Gateway version.
   subscriptions: false,
-})
+});
 
 const port = process.env.PORT || 3000
 
