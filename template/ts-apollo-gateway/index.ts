@@ -8,10 +8,12 @@ import { ApolloGateway } from '@apollo/gateway';
 import { serviceList } from './function/service-list';
 import { getEnvironmentVariables } from './function/env-variables';
 
+const apolloStudioKey = process.env?.APOLLO_KEY;
+const apolloStudioSchemaConfigDeliveryEndpoint = process.env?.APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT;
+const apolloStudioVariant = process.env?.APOLLO_GRAPH_VARIANT;
+
 const startServer = async () => {
   const vars = await getEnvironmentVariables();
-  const apolloKey = vars?.APOLLO_STUDIO_KEY;
-  const apolloSchemaConfigDeliveryEndpoint = vars?.APOLLO_STUDIO_SCHEMA_CONFIG_DELIVERY_ENDPOINT;
   const port = vars?.PORT || 3000;
 
   const debug = vars?.APOLLO_DEBUG === true || false;
@@ -22,9 +24,9 @@ const startServer = async () => {
   const serviceListWrapper = {
     ...(Array.isArray(serviceList) && serviceList.length > 0 ? { serviceList } : {}),
   };
-  if (!serviceList && (!apolloKey || !apolloSchemaConfigDeliveryEndpoint)) {
+  if (!serviceList && (!apolloStudioKey || !apolloStudioSchemaConfigDeliveryEndpoint || !apolloStudioVariant)) {
     const errorMsg =
-      'You must either set the APOLLO_KEY and APOLLO_STUDIO_SCHEMA_CONFIG_DELIVERY_ENDPOINT environment variables, if you wish to use Apollo Studio. Otherwise, please provide a service list.';
+      'You must either set the APOLLO_KEY and APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT environment variables, if you wish to use Apollo Studio. Otherwise, please provide a service list.';
     console.error(errorMsg);
     throw new Error(errorMsg);
   }
