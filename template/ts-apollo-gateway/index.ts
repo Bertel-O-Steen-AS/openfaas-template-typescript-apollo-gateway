@@ -3,39 +3,50 @@
 // Copyright (c) Alex Ellis 2017. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-import { ApolloServer } from 'apollo-server'
-import { ApolloGateway } from '@apollo/gateway'
+import { ApolloServer } from 'apollo-server';
+import { ApolloGateway } from '@apollo/gateway';
+import { serviceList } from './function/service-list';
+import { getEnvironmentVariables } from './function/env-variables';
 
-const args = process.argv.slice(2);
-const mode = args[0]
-const apolloKey = process.env.APOLLO_KEY;
-const apolloSchemaConfigDeliveryEndpoint = process.env.APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT;
-const debug = !!process.env.APOLLO_DEBUG ? process.env.APOLLO_DEBUG === 'true' : false;
-const introspection = !!process.env.APOLLO_INTROSPECTION ? process.env.APOLLO_INTROSPECTION === 'true' : true;
-const playground = !!process.env.APOLLO_PLAYGROUND ? process.env.APOLLO_PLAYGROUND === 'true' : false;
+const startServer = async () => {
+  const vars = await getEnvironmentVariables();
+  const apolloKey = vars?.APOLLO_STUDIO_KEY;
+  const apolloSchemaConfigDeliveryEndpoint = vars?.APOLLO_STUDIO_SCHEMA_CONFIG_DELIVERY_ENDPOINT;
+  const port = vars?.PORT || 3000;
 
-const config = {}
-if (!apolloKey || !apolloSchemaConfigDeliveryEndpoint) {
-  const errorMsg = 'You must set the APOLLO_KEY and/or APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT environment variables!';
-  console.error(errorMsg);
-  throw new Error(errorMsg);
-}
+  const debug = vars?.APOLLO_DEBUG === true || false;
+  const introspection = vars?.APOLLO_INTROSPECTION === true || true;
+  const playground = vars?.APOLLO_PLAYGROUND === true || false;
 
-const gateway = new ApolloGateway(config)
+  const config = {};
+  const serviceListWrapper = {
+    ...(Array.isArray(serviceList) && serviceList.length > 0 ? { serviceList } : {}),
+  };
+  if (!serviceList && (!apolloKey || !apolloSchemaConfigDeliveryEndpoint)) {
+    const errorMsg =
+      'You must either set the APOLLO_KEY and APOLLO_STUDIO_SCHEMA_CONFIG_DELIVERY_ENDPOINT environment variables, if you wish to use Apollo Studio. Otherwise, please provide a service list.';
+    console.error(errorMsg);
+    throw new Error(errorMsg);
+  }
 
-const server = new ApolloServer({
-  gateway,
-  introspection,
-  playground,
-  debug,
-  // Subscriptions are unsupported but planned for a future Gateway version.
-  subscriptions: false,
-});
+  const gateway = new ApolloGateway(config);
 
-const port = process.env.PORT || 3000
+  const server = new ApolloServer({
+    gateway,
+    introspection,
+    playground,
+    debug,
+    // Subscriptions are unsupported but planned for a future Gateway version.
+    subscriptions: false,
+    ...serviceListWrapper,
+  });
 
-server.listen(port)
-  .then(({url}) => {
-    console.log(`🚀 Gateway ready at ${url}`);
-  })
-  .catch((error) => console.error(error));
+  server
+    .listen(port)
+    .then(({ url }) => {
+      console.log(`🚀 Gateway ready at ${url}`);
+    })
+    .catch(error => console.error(error));
+};
+
+startServer();
