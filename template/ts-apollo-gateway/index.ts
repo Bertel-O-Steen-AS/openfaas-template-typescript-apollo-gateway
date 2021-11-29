@@ -8,6 +8,8 @@ import { ApolloGateway } from '@apollo/gateway';
 import { serviceList } from './function/service-list';
 import { getEnvironmentVariables } from './function/env-variables';
 import { config } from './function/config';
+import { context } from './function/context';
+import { formatError } from './function/log';
 
 const apolloStudioKey = process.env?.APOLLO_KEY;
 const apolloStudioSchemaConfigDeliveryEndpoint = process.env?.APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT;
@@ -38,6 +40,8 @@ const startServer = async () => {
     introspection,
     playground,
     debug,
+    context,
+    formatError,
     // Subscriptions are unsupported but planned for a future Gateway version.
     subscriptions: false,
     ...serviceListWrapper,
