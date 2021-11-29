@@ -1,3 +1,5 @@
 /** @format */
 
-export const config = {};
+import { GatewayConfig } from '@apollo/gateway';
+
+export const config: GatewayConfig = {};
