@@ -34,8 +34,7 @@ COPY --chown=app:app index.ts ./
 # entry allows caching of npm install
 
 WORKDIR /home/app/function
-COPY --chown=app:app function/*.json ./
-COPY --chown=app:app function/.npmrc ./
+COPY --chown=app:app function/*.json function/.npmrc* ./
 
 RUN npm i || :
 
