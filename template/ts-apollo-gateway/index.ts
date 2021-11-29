@@ -21,7 +21,6 @@ const startServer = async () => {
 
   const debug = vars?.APOLLO_DEBUG === true || false;
   const introspection = vars?.APOLLO_INTROSPECTION === true || true;
-  const playground = vars?.APOLLO_PLAYGROUND === true || false;
 
   const serviceListWrapper = {
     ...(Array.isArray(serviceList) && serviceList.length > 0 ? { serviceList } : {}),
@@ -38,12 +37,9 @@ const startServer = async () => {
   const server = new ApolloServer({
     gateway,
     introspection,
-    playground,
     debug,
     context,
     formatError,
-    // Subscriptions are unsupported but planned for a future Gateway version.
-    subscriptions: false,
     ...serviceListWrapper,
   });
 
