@@ -7,6 +7,7 @@ import { ApolloServer } from 'apollo-server';
 import { ApolloGateway } from '@apollo/gateway';
 import { serviceList } from './function/service-list';
 import { getEnvironmentVariables } from './function/env-variables';
+import { config } from './function/config';
 
 const apolloStudioKey = process.env?.APOLLO_KEY;
 const apolloStudioSchemaConfigDeliveryEndpoint = process.env?.APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT;
@@ -20,7 +21,6 @@ const startServer = async () => {
   const introspection = vars?.APOLLO_INTROSPECTION === true || true;
   const playground = vars?.APOLLO_PLAYGROUND === true || false;
 
-  const config = {};
   const serviceListWrapper = {
     ...(Array.isArray(serviceList) && serviceList.length > 0 ? { serviceList } : {}),
   };
