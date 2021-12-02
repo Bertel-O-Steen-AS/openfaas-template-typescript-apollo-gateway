@@ -2,8 +2,7 @@
 
 export interface IApolloStudioGatewayVariables {
   APOLLO_KEY?: string;
-  APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT?: string;
-  APOLLO_GRAPH_VARIANT?: string;
+  APOLLO_GRAPH_REF?: string;
 }
 
 export interface IApolloGatewayVariables extends IApolloStudioGatewayVariables {

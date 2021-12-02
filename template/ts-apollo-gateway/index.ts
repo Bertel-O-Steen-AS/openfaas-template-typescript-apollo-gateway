@@ -12,8 +12,7 @@ import { context } from './function/context';
 import { formatError } from './function/log';
 
 const apolloStudioKey = process.env?.APOLLO_KEY;
-const apolloStudioSchemaConfigDeliveryEndpoint = process.env?.APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT;
-const apolloStudioVariant = process.env?.APOLLO_GRAPH_VARIANT;
+const apolloStudioGraphRef = process.env?.APOLLO_GRAPH_REF;
 
 const startServer = async () => {
   const vars = await getEnvironmentVariables();
@@ -25,9 +24,9 @@ const startServer = async () => {
   const serviceListWrapper = {
     ...(Array.isArray(serviceList) && serviceList.length > 0 ? { serviceList } : {}),
   };
-  if (!serviceList && (!apolloStudioKey || !apolloStudioSchemaConfigDeliveryEndpoint || !apolloStudioVariant)) {
+  if (!serviceList && (!apolloStudioKey || !apolloStudioGraphRef)) {
     const errorMsg =
-      'You must either set the APOLLO_KEY and APOLLO_SCHEMA_CONFIG_DELIVERY_ENDPOINT environment variables, if you wish to use Apollo Studio. Otherwise, please provide a service list.';
+      'You must set the APOLLO_KEY and APOLLO_GRAPH_REF environment variables, if you wish to use Apollo Studio. Otherwise, please provide a service list.';
     console.error(errorMsg);
     throw new Error(errorMsg);
   }
