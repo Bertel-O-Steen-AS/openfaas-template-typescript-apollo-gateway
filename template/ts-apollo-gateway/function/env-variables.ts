@@ -1,5 +1,3 @@
-/** @format */
-
 export interface IApolloStudioGatewayVariables {
   APOLLO_KEY?: string;
   APOLLO_GRAPH_REF?: string;

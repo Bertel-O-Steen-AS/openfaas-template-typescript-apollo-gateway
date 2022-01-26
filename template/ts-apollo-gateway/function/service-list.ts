@@ -1,5 +1,3 @@
-/** @format */
+import { ServiceEndpointDefinition } from '@apollo/gateway';
 
-import {ServiceEndpointDefinition} from '@apollo/gateway'
-
-export const serviceList: ServiceEndpointDefinition[] = []
+export const serviceList: ServiceEndpointDefinition[] = [];
