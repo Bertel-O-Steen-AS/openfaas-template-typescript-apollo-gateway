@@ -1,3 +1,5 @@
 export const context = async ({ request }) => {
-  return {};
+  return {
+    request
+  };
 };

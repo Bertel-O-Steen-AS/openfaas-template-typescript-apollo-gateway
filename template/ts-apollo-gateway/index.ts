@@ -5,7 +5,6 @@ import { ApolloServer } from 'apollo-server';
 import { ApolloGateway } from '@apollo/gateway';
 import { serviceList } from './function/service-list';
 import { getEnvironmentVariables } from './function/env-variables';
-import { config } from './function/config';
 import { context } from './function/context';
 import { formatError } from './function/log';
 
@@ -29,7 +28,7 @@ const startServer = async () => {
     throw new Error(errorMsg);
   }
 
-  const gateway = new ApolloGateway(config);
+  const gateway = new ApolloGateway();
 
   const server = new ApolloServer({
     gateway,
