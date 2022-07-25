@@ -1,4 +1,4 @@
-FROM node:14.16.1-alpine
+FROM node:16.16.0-alpine
 
 RUN addgroup -S app && adduser -S -g app app
 
@@ -39,7 +39,8 @@ COPY --chown=app:app function/*.json function/.npmrc* ./
 RUN npm i || :
 
 # COPY function files and folders
-COPY function/ ./
+COPY --chown=app:app function/ ./
+RUN chmod 775 /home/app/function
 
 # Set correct permissions to use non root user
 WORKDIR /home/app/
