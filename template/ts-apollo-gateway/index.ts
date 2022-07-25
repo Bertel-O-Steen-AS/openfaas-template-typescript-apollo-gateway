@@ -6,6 +6,7 @@ import { ApolloGateway } from '@apollo/gateway';
 import { serviceList } from './function/service-list';
 import { getEnvironmentVariables } from './function/env-variables';
 import { context } from './function/context';
+import { config } from './function/config';
 import { formatError } from './function/log';
 
 const apolloStudioKey = process.env?.APOLLO_KEY;
@@ -28,7 +29,7 @@ const startServer = async () => {
     throw new Error(errorMsg);
   }
 
-  const gateway = new ApolloGateway();
+  const gateway = config ? new ApolloGateway(config) : new ApolloGateway();
 
   const server = new ApolloServer({
     gateway,
