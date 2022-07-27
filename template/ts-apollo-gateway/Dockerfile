@@ -40,7 +40,7 @@ RUN npm i || :
 
 # COPY function files and folders
 COPY --chown=app:app function/ ./
-RUN chmod 775 /home/app/function
+RUN chmod 777 /home/app/function
 
 # Set correct permissions to use non root user
 WORKDIR /home/app/

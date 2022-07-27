@@ -29,7 +29,11 @@ const startServer = async () => {
     throw new Error(errorMsg);
   }
 
-  const gateway = config ? new ApolloGateway(config) : new ApolloGateway();
+  const isEmptyObject = (obj: any) => {
+    return Object.keys(obj)?.length === 0;
+  };
+
+  const gateway = isEmptyObject(config) ? new ApolloGateway() : new ApolloGateway(config);
 
   const server = new ApolloServer({
     gateway,
