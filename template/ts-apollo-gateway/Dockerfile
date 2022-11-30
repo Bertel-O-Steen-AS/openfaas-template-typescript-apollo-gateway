@@ -42,6 +42,9 @@ RUN npm i || :
 COPY --chown=app:app function/ ./
 RUN chmod 777 /home/app/function
 
+# Run any tests that may be available
+RUN npm test
+
 # Set correct permissions to use non root user
 WORKDIR /home/app/
 
