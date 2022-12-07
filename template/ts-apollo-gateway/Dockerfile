@@ -9,6 +9,9 @@ RUN apk --no-cache add curl ca-certificates \
     && chmod +x /usr/bin/fwatchdog \
     && apk del curl
 
+# Allows to build node-rdkafka that is required
+RUN apk add --update --no-cache bash
+
 WORKDIR /root/
 
 # Turn down the verbosity to default level.
