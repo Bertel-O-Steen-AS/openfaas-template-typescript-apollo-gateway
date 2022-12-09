@@ -46,6 +46,7 @@ COPY --chown=app:app function/ ./
 RUN chmod 777 /home/app/function
 
 # Run any tests that may be available
+RUN ls -la
 RUN npm test
 
 # Set correct permissions to use non root user
